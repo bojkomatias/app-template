@@ -1,0 +1,37 @@
+{
+  "name": "react-template",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "rsbuild dev --open",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.1.2",
+    "@heroicons/react": "^2.1.5",
+    "@tanstack/react-form": "^0.29.1",
+    "@tanstack/react-query": "^5.51.23",
+    "@tanstack/react-router": "^1.47.1",
+    "@tanstack/zod-form-adapter": "^0.28.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.3.24",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "redaxios": "^0.5.1"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "1.0.1-beta.11",
+    "@rsbuild/plugin-react": "1.0.1-beta.11",
+    "@tanstack/router-devtools": "^1.47.1",
+    "@tanstack/router-plugin": "^1.47.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41",
+    "prettier-plugin-tailwindcss": "^0.6.6",
+    "tailwindcss": "^3.4.9",
+    "typescript": "^5.5.2"
+  }
+}
