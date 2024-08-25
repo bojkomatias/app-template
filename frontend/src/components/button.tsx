@@ -181,7 +181,7 @@ export const Button = forwardRef(function Button(
         : clsx(styles.solid, styles.colors[color ?? "dark/zinc"]),
   );
 
-  return "to" || "href" in props ? (
+  return "to" in props || "href" in props ? (
     <Link
       {...props}
       className={classes}

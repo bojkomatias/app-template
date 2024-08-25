@@ -1,7 +1,8 @@
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import { Database } from "bun:sqlite";
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
-import { sessions, users } from "./tables";
+import { users } from "./schema/user";
+import { sessions } from "./schema/session";
 
 if (!process.env.DATABASE_URL) throw Error("No DATABASE_URL found");
 

@@ -166,7 +166,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
           className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
         />
       )}
-      {"to" || "href" in props ? (
+      {"to" in props || "href" in props ? (
         <Headless.CloseButton as={Fragment} ref={ref}>
           <Link
             className={classes}

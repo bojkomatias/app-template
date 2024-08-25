@@ -1,21 +1,17 @@
 import { Hono } from "hono";
 import type { Context } from "../lib/context.js";
-import { validator } from "hono/validator";
-import { z } from "zod";
-import { credentialsSchema, DatabaseUser } from "../db/schema.js";
 import { generateId } from "lucia";
-import { adapter, db } from "../db/client.js";
-import { users } from "../db/tables.js";
+import { db } from "../db/client.js";
 import { github, lucia } from "../lib/auth.js";
 import { eq } from "drizzle-orm";
 import { getCookie, setCookie } from "hono/cookie";
 import { generateState, OAuth2RequestError } from "arctic";
+import { users } from "../db/schema/user.js";
 
-export const authRouter = new Hono<Context>()
+export const authApi = new Hono<Context>()
   .get("session", async (c) => {
     const session = c.get("session");
-    const user = c.get("user");
-    return c.json({ session, user }, 200);
+    return c.json({ session }, 200);
   })
 
   .get("auth/github", async (c) => {
@@ -48,8 +44,13 @@ export const authRouter = new Hono<Context>()
         },
       });
 
-      const githubUser: { id: number; login: string } =
-        await githubUserResponse.json();
+      const githubUser: {
+        id: number;
+        login: string;
+        name: string;
+        email: string;
+        avatar_url: string;
+      } = await githubUserResponse.json();
 
       const [existingUser] = await db
         .select()
@@ -70,8 +71,11 @@ export const authRouter = new Hono<Context>()
 
       const result = await db.insert(users).values({
         id: userId,
-        username: githubUser.login,
         github_id: githubUser.id,
+        username: githubUser.login,
+        name: githubUser.name,
+        email: githubUser.email,
+        avatar_url: githubUser.avatar_url,
       });
 
       const session = await lucia.createSession(userId, {});

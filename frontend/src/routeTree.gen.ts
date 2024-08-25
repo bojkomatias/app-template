@@ -13,7 +13,10 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AppImport } from './routes/_app'
 import { Route as IndexImport } from './routes/index'
+import { Route as AppSettingsImport } from './routes/_app/settings'
 import { Route as AppAppImport } from './routes/_app/app'
+import { Route as AppExpensesImport } from './routes/_app/_expenses'
+import { Route as AppExpensesExpensesImport } from './routes/_app/_expenses.expenses'
 
 // Create/Update Routes
 
@@ -27,9 +30,24 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AppSettingsRoute = AppSettingsImport.update({
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+
 const AppAppRoute = AppAppImport.update({
   path: '/app',
   getParentRoute: () => AppRoute,
+} as any)
+
+const AppExpensesRoute = AppExpensesImport.update({
+  id: '/_expenses',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppExpensesExpensesRoute = AppExpensesExpensesImport.update({
+  path: '/expenses',
+  getParentRoute: () => AppExpensesRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -50,12 +68,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppImport
       parentRoute: typeof rootRoute
     }
+    '/_app/_expenses': {
+      id: '/_app/_expenses'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppExpensesImport
+      parentRoute: typeof AppImport
+    }
     '/_app/app': {
       id: '/_app/app'
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppAppImport
       parentRoute: typeof AppImport
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/_expenses/expenses': {
+      id: '/_app/_expenses/expenses'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof AppExpensesExpensesImport
+      parentRoute: typeof AppExpensesImport
     }
   }
 }
@@ -64,7 +103,13 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AppRoute: AppRoute.addChildren({ AppAppRoute }),
+  AppRoute: AppRoute.addChildren({
+    AppExpensesRoute: AppExpensesRoute.addChildren({
+      AppExpensesExpensesRoute,
+    }),
+    AppAppRoute,
+    AppSettingsRoute,
+  }),
 })
 
 /* prettier-ignore-end */
@@ -85,12 +130,29 @@ export const routeTree = rootRoute.addChildren({
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
-        "/_app/app"
+        "/_app/_expenses",
+        "/_app/app",
+        "/_app/settings"
+      ]
+    },
+    "/_app/_expenses": {
+      "filePath": "_app/_expenses.tsx",
+      "parent": "/_app",
+      "children": [
+        "/_app/_expenses/expenses"
       ]
     },
     "/_app/app": {
       "filePath": "_app/app.tsx",
       "parent": "/_app"
+    },
+    "/_app/settings": {
+      "filePath": "_app/settings.tsx",
+      "parent": "/_app"
+    },
+    "/_app/_expenses/expenses": {
+      "filePath": "_app/_expenses.expenses.tsx",
+      "parent": "/_app/_expenses"
     }
   }
 }

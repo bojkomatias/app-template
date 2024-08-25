@@ -1,14 +1,9 @@
-import {
-  Outlet,
-  createRootRoute,
-  createRootRouteWithContext,
-} from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import type { Session, User } from "lucia";
 
 type Context = {
-  user: User | null;
-  session: Session | null;
+  session: (Omit<Session, "expiresAt"> & { expiresAt: string }) | null;
 };
 
 export const Route = createRootRouteWithContext<Context>()({

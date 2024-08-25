@@ -2,13 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import "./styles.css";
-
 import { routeTree } from "./routeTree.gen";
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery,
-  useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { sessionQueryOptions } from "./lib/query/session";
@@ -17,6 +14,7 @@ import { sessionQueryOptions } from "./lib/query/session";
 const router = createRouter({
   routeTree,
   defaultPreload: "intent",
+  context: { session: null },
 });
 
 // Register things for typesafety
@@ -27,6 +25,8 @@ declare module "@tanstack/react-router" {
 }
 
 const queryClient = new QueryClient();
+
+document.querySelector("html")!.classList.add("dark");
 
 const rootEl = document.getElementById("root");
 if (rootEl) {

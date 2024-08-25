@@ -97,7 +97,7 @@ export const NavbarItem = forwardRef(function NavbarItem(
           className="absolute inset-x-2 -bottom-2.5 h-0.5 rounded-full bg-zinc-950 dark:bg-white"
         />
       )}
-      {"to" || "href" in props ? (
+      {"to" in props || "href" in props ? (
         <Link
           {...props}
           className={classes}

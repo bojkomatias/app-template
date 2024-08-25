@@ -80,7 +80,7 @@ export function DropdownItem({
 
   return (
     <Headless.MenuItem>
-      {"to" || "href" in props ? (
+      {"to" in props || "href" in props ? (
         <Link {...props} className={classes} />
       ) : (
         <button type="button" {...props} className={classes} />
@@ -156,7 +156,6 @@ export function DropdownLabel({
       {...props}
       data-slot="label"
       className={clsx(className, "col-start-2 row-start-1")}
-      {...props}
     />
   );
 }
