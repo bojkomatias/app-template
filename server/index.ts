@@ -5,12 +5,12 @@ import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
 import { lucia } from "./lib/auth.js";
 import { authApi } from "./api/auth.js";
+import { usersApi } from "./api/users.js";
 
 const app = new Hono<Context>();
 
 app.use("*", async (c, next) => {
   const sessionId = lucia.readSessionCookie(c.req.header("Cookie") ?? "");
-  console.log("sessionId", sessionId);
 
   if (!sessionId) {
     c.set("user", null);
@@ -19,7 +19,6 @@ app.use("*", async (c, next) => {
   }
 
   const { session, user } = await lucia.validateSession(sessionId);
-  console.log("session - user", session, user);
 
   if (session && session.fresh) {
     c.header("Set-Cookie", lucia.createSessionCookie(session.id).serialize(), {
@@ -40,7 +39,7 @@ app.use(logger());
 app.use(csrf());
 app.use("*", cors());
 
-const api = app.basePath("/api").route("/", authApi);
+const api = app.basePath("/api").route("/", authApi).route("/", usersApi);
 
 export type ApiType = typeof api;
 

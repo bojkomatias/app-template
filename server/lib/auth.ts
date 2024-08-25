@@ -1,6 +1,7 @@
 import { Lucia } from "lucia";
 import { adapter } from "../db/client";
 import { GitHub } from "arctic";
+import { DatabaseUser } from "../db/schema/user";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -10,8 +11,12 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes: (attributes) => {
     return {
-      githubId: attributes.github_id,
+      github_id: attributes.github_id,
       username: attributes.username,
+      email: attributes.email,
+      name: attributes.name,
+      avatar_url: attributes.avatar_url,
+      created_at: attributes.created_at,
     };
   },
 });
@@ -24,6 +29,6 @@ export const github = new GitHub(
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
-    DatabaseUserAttributes: { github_id: number; username: string };
+    DatabaseUserAttributes: DatabaseUser;
   }
 }

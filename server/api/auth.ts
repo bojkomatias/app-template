@@ -24,7 +24,6 @@ export const authApi = new Hono<Context>()
       maxAge: 60 * 10,
       sameSite: "Lax",
     });
-    console.log(url.toString());
     return c.redirect(url.toString());
   })
 
@@ -99,7 +98,6 @@ export const authApi = new Hono<Context>()
 
   .get("logout", async (c) => {
     const session = c.get("session");
-    console.log(session);
     if (!session) {
       return c.body(null, 401);
     }
