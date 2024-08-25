@@ -6,15 +6,22 @@ import { routeTree } from "./routeTree.gen";
 import {
   QueryClient,
   QueryClientProvider,
+  useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { sessionQueryOptions } from "./lib/query/session";
+import { sessionQueryOptions } from "@/modules/user/queries";
+
+const queryClient = new QueryClient();
+
+queryClient.prefetchQuery(sessionQueryOptions);
 
 // Set up a Router instance
 const router = createRouter({
   routeTree,
+  context: { queryClient, session: null },
   defaultPreload: "intent",
-  context: { session: null },
+  // Using React Query, we will call loader always
+  defaultPreloadStaleTime: 0,
 });
 
 // Register things for typesafety
@@ -24,9 +31,7 @@ declare module "@tanstack/react-router" {
   }
 }
 
-const queryClient = new QueryClient();
-
-document.querySelector("html")!.classList.add("dark");
+// document.querySelector("html")!.classList.add("dark");
 
 const rootEl = document.getElementById("root");
 if (rootEl) {

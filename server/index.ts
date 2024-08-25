@@ -6,6 +6,7 @@ import { csrf } from "hono/csrf";
 import { lucia } from "./lib/auth.js";
 import { authApi } from "./api/auth.js";
 import { usersApi } from "./api/users.js";
+import { expensesApi } from "./api/expenses.js";
 
 const app = new Hono<Context>();
 
@@ -39,7 +40,11 @@ app.use(logger());
 app.use(csrf());
 app.use("*", cors());
 
-const api = app.basePath("/api").route("/", authApi).route("/", usersApi);
+const api = app
+  .basePath("/api")
+  .route("/", authApi)
+  .route("/", usersApi)
+  .route("/", expensesApi);
 
 export type ApiType = typeof api;
 

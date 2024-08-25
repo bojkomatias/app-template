@@ -1,9 +1,10 @@
 import { sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { users } from "./user";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const expenses = sqliteTable("expenses", {
-  id: text("id").notNull().primaryKey(),
+  id: integer("id").notNull().primaryKey({ autoIncrement: true }),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
@@ -15,3 +16,8 @@ export const expenses = sqliteTable("expenses", {
     .notNull()
     .default(sql`(current_timestamp)`),
 });
+
+export const selectExpense = createSelectSchema(expenses);
+export const insertExpense = createInsertSchema(expenses);
+
+export type Expense = typeof expenses.$inferSelect;

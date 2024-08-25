@@ -9,12 +9,12 @@ import { generateState, OAuth2RequestError } from "arctic";
 import { users } from "../db/schema/user.js";
 
 export const authApi = new Hono<Context>()
-  .get("session", async (c) => {
+  .get("/session", async (c) => {
     const session = c.get("session");
     return c.json({ session }, 200);
   })
 
-  .get("auth/github", async (c) => {
+  .get("/auth/github", async (c) => {
     const state = generateState();
     const url = await github.createAuthorizationURL(state);
     setCookie(c, "github_oauth_state", state, {
@@ -27,7 +27,7 @@ export const authApi = new Hono<Context>()
     return c.redirect(url.toString());
   })
 
-  .get("auth/callback/github", async (c) => {
+  .get("/auth/callback/github", async (c) => {
     const code = c.req.query("code")?.toString() ?? null;
     const state = c.req.query("state")?.toString() ?? null;
     const storedState = getCookie(c).github_oauth_state ?? null;
@@ -63,7 +63,7 @@ export const authApi = new Hono<Context>()
           lucia.createSessionCookie(session.id).serialize(),
           { append: true },
         );
-        return c.redirect(Bun.env.BASE_URL!);
+        return c.redirect(`${Bun.env.BASE_URL!}/app`);
       }
 
       const userId = generateId(15);
@@ -83,7 +83,7 @@ export const authApi = new Hono<Context>()
         lucia.createSessionCookie(session.id).serialize(),
         { append: true },
       );
-      return c.redirect(Bun.env.BASE_URL!);
+      return c.redirect(`${Bun.env.BASE_URL!}/app`);
     } catch (e) {
       if (
         e instanceof OAuth2RequestError &&
@@ -96,7 +96,7 @@ export const authApi = new Hono<Context>()
     }
   })
 
-  .get("logout", async (c) => {
+  .get("/logout", async (c) => {
     const session = c.get("session");
     if (!session) {
       return c.body(null, 401);

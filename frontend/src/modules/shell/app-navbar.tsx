@@ -24,6 +24,7 @@ import {
 } from "@/components/dropdown";
 import { Avatar } from "@/components/avatar";
 import { navItems } from "./navigation";
+import { UserDropdown } from "../user/user-dropdown";
 
 export function AppNavbar() {
   return (
@@ -44,26 +45,7 @@ export function AppNavbar() {
         <NavbarItem to="/inbox" aria-label="Inbox">
           <InboxIcon />
         </NavbarItem>
-        <Dropdown>
-          <DropdownButton as={NavbarItem}>
-            <Avatar src="/profile-photo.jpg" square />
-          </DropdownButton>
-          <DropdownMenu className="min-w-64" anchor="bottom end">
-            <DropdownItem to="/profile">
-              <UserIcon />
-              <DropdownLabel>My profile</DropdownLabel>
-            </DropdownItem>
-            <DropdownItem to="/settings">
-              <Cog8ToothIcon />
-              <DropdownLabel>Settings</DropdownLabel>
-            </DropdownItem>
-            <DropdownDivider />
-            <DropdownItem href="/api/logout">
-              <ArrowRightStartOnRectangleIcon />
-              <DropdownLabel>Sign out</DropdownLabel>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        <UserDropdown />
       </NavbarSection>
     </Navbar>
   );
