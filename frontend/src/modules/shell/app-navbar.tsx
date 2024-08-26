@@ -2,38 +2,27 @@ import {
   Navbar,
   NavbarDivider,
   NavbarItem,
+  NavbarLabel,
   NavbarSection,
   NavbarSpacer,
 } from "@/components/navbar";
-import {
-  MagnifyingGlassIcon,
-  InboxIcon,
-  ArrowRightStartOnRectangleIcon,
-  Cog8ToothIcon,
-  LightBulbIcon,
-  ShieldCheckIcon,
-  UserIcon,
-} from "@heroicons/react/20/solid";
-import {
-  Dropdown,
-  DropdownButton,
-  DropdownDivider,
-  DropdownItem,
-  DropdownLabel,
-  DropdownMenu,
-} from "@/components/dropdown";
-import { Avatar } from "@/components/avatar";
+import { MagnifyingGlassIcon, InboxIcon } from "@heroicons/react/16/solid";
 import { navItems } from "./navigation";
 import { UserDropdown } from "../user/user-dropdown";
+import { useLocation, useMatch } from "@tanstack/react-router";
 
 export function AppNavbar() {
+  const pathname = useLocation({ select: (location) => location.pathname });
+
   return (
     <Navbar>
+      <img src="/bun.svg" className="size-8" />
       <NavbarDivider className="max-lg:hidden" />
       <NavbarSection className="max-lg:hidden">
-        {navItems.map(({ label, url }) => (
-          <NavbarItem key={label} to={url}>
-            {label}
+        {navItems.map(({ label, url, Icon }) => (
+          <NavbarItem key={label} to={url} current={pathname.includes(url)}>
+            <Icon data-slot="icon" />
+            <NavbarLabel>{label}</NavbarLabel>
           </NavbarItem>
         ))}
       </NavbarSection>

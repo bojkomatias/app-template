@@ -1,6 +1,18 @@
-import { Text } from "@/components/text";
-import { createFileRoute } from "@tanstack/react-router";
+import { SidebarLayout } from "@/components/sidebar-layout";
+import { SettingsSidebar } from "@/modules/settings/settings-sidebar";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+
+const context = import.meta.webpackContext("./settings/", {
+  recursive: true,
+});
+
+console.log("sape", context);
 
 export const Route = createFileRoute("/_app/settings")({
-  component: () => <Text>Hello /_app/settings!</Text>,
+  component: () => (
+    <div className="flex">
+      <SettingsSidebar />
+      <Outlet />
+    </div>
+  ),
 });

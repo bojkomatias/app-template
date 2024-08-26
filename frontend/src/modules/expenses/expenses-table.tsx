@@ -62,7 +62,7 @@ export function ExpensesTable() {
 
   return (
     <div
-      className="relative max-h-[90svh] w-full overflow-auto"
+      className="relative col-span-2 max-h-[60svh] overflow-auto rounded-lg border p-4"
       onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
       ref={tableContainerRef}
     >

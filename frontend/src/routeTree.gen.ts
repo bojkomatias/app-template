@@ -15,9 +15,12 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AppImport } from './routes/_app'
 import { Route as IndexImport } from './routes/index'
 import { Route as AppSettingsImport } from './routes/_app/settings'
-import { Route as AppProfileImport } from './routes/_app/profile'
 import { Route as AppAppImport } from './routes/_app/app'
 import { Route as AppExpensesImport } from './routes/_app/_expenses'
+import { Route as AppSettingsIndexImport } from './routes/_app/settings/index'
+import { Route as AppSettingsThemeImport } from './routes/_app/settings/theme'
+import { Route as AppSettingsProfileImport } from './routes/_app/settings/profile'
+import { Route as AppSettingsDisplayImport } from './routes/_app/settings/display'
 import { Route as AppExpensesExpensesImport } from './routes/_app/_expenses.expenses'
 
 // Create/Update Routes
@@ -42,11 +45,6 @@ const AppSettingsRoute = AppSettingsImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
-const AppProfileRoute = AppProfileImport.update({
-  path: '/profile',
-  getParentRoute: () => AppRoute,
-} as any)
-
 const AppAppRoute = AppAppImport.update({
   path: '/app',
   getParentRoute: () => AppRoute,
@@ -55,6 +53,26 @@ const AppAppRoute = AppAppImport.update({
 const AppExpensesRoute = AppExpensesImport.update({
   id: '/_expenses',
   getParentRoute: () => AppRoute,
+} as any)
+
+const AppSettingsIndexRoute = AppSettingsIndexImport.update({
+  path: '/',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+
+const AppSettingsThemeRoute = AppSettingsThemeImport.update({
+  path: '/theme',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+
+const AppSettingsProfileRoute = AppSettingsProfileImport.update({
+  path: '/profile',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+
+const AppSettingsDisplayRoute = AppSettingsDisplayImport.update({
+  path: '/display',
+  getParentRoute: () => AppSettingsRoute,
 } as any)
 
 const AppExpensesExpensesRoute = AppExpensesExpensesImport.update({
@@ -101,13 +119,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAppImport
       parentRoute: typeof AppImport
     }
-    '/_app/profile': {
-      id: '/_app/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AppProfileImport
-      parentRoute: typeof AppImport
-    }
     '/_app/settings': {
       id: '/_app/settings'
       path: '/settings'
@@ -122,6 +133,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppExpensesExpensesImport
       parentRoute: typeof AppExpensesImport
     }
+    '/_app/settings/display': {
+      id: '/_app/settings/display'
+      path: '/display'
+      fullPath: '/settings/display'
+      preLoaderRoute: typeof AppSettingsDisplayImport
+      parentRoute: typeof AppSettingsImport
+    }
+    '/_app/settings/profile': {
+      id: '/_app/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof AppSettingsProfileImport
+      parentRoute: typeof AppSettingsImport
+    }
+    '/_app/settings/theme': {
+      id: '/_app/settings/theme'
+      path: '/theme'
+      fullPath: '/settings/theme'
+      preLoaderRoute: typeof AppSettingsThemeImport
+      parentRoute: typeof AppSettingsImport
+    }
+    '/_app/settings/': {
+      id: '/_app/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AppSettingsIndexImport
+      parentRoute: typeof AppSettingsImport
+    }
   }
 }
 
@@ -134,8 +173,12 @@ export const routeTree = rootRoute.addChildren({
       AppExpensesExpensesRoute,
     }),
     AppAppRoute,
-    AppProfileRoute,
-    AppSettingsRoute,
+    AppSettingsRoute: AppSettingsRoute.addChildren({
+      AppSettingsDisplayRoute,
+      AppSettingsProfileRoute,
+      AppSettingsThemeRoute,
+      AppSettingsIndexRoute,
+    }),
   }),
   LoginRoute,
 })
@@ -161,7 +204,6 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_app/_expenses",
         "/_app/app",
-        "/_app/profile",
         "/_app/settings"
       ]
     },
@@ -179,17 +221,35 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_app/app.tsx",
       "parent": "/_app"
     },
-    "/_app/profile": {
-      "filePath": "_app/profile.tsx",
-      "parent": "/_app"
-    },
     "/_app/settings": {
       "filePath": "_app/settings.tsx",
-      "parent": "/_app"
+      "parent": "/_app",
+      "children": [
+        "/_app/settings/display",
+        "/_app/settings/profile",
+        "/_app/settings/theme",
+        "/_app/settings/"
+      ]
     },
     "/_app/_expenses/expenses": {
       "filePath": "_app/_expenses.expenses.tsx",
       "parent": "/_app/_expenses"
+    },
+    "/_app/settings/display": {
+      "filePath": "_app/settings/display.tsx",
+      "parent": "/_app/settings"
+    },
+    "/_app/settings/profile": {
+      "filePath": "_app/settings/profile.tsx",
+      "parent": "/_app/settings"
+    },
+    "/_app/settings/theme": {
+      "filePath": "_app/settings/theme.tsx",
+      "parent": "/_app/settings"
+    },
+    "/_app/settings/": {
+      "filePath": "_app/settings/index.tsx",
+      "parent": "/_app/settings"
     }
   }
 }
